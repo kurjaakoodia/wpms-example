@@ -1,10 +1,7 @@
-/* eslint-disable max-len */
-
 import { FlatList } from "react-native";
 import ListItem from "./ListItem";
 import { useEffect, useState } from "react";
-
-const apiUrl = "https://media.mw.metropolia.fi/wbma/";
+import { apiUrl } from "../utils/app-config";
 
 const List = () => {
   const [mediaArray, setMediaArray] = useState([]);
@@ -13,16 +10,17 @@ const List = () => {
     try {
       const response = await fetch(apiUrl + "media");
       const json = await response.json();
-      Promise.all(
+      // console.log(json);
+      const mediaFiles = await Promise.all(
         json.map(async (item) => {
           const response = await fetch(apiUrl + "media/" + item.file_id);
           const fileData = await response.json();
-          console.log("fileData", fileData);
+          // console.log('fileData', fileData);
           return fileData;
         }),
       );
-
-      setMediaArray(json);
+      // console.log(data);
+      setMediaArray(mediaFiles);
     } catch (error) {
       console.error("loadMedia failed", error);
     }
@@ -39,4 +37,5 @@ const List = () => {
     />
   );
 };
+
 export default List;
