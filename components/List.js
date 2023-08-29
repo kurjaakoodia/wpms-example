@@ -1,4 +1,5 @@
 import {FlatList} from 'react-native';
+<<<<<<< HEAD
 import ListItem from './ListItem';
 
 const mediaArray = [
@@ -33,8 +34,13 @@ const mediaArray = [
     filename: 'http://placekitten.com/2039/1920',
   },
 ];
+=======
+import {useMedia} from './hooks/apiHooks';
+import ListItem from './ListItem';
+>>>>>>> http-b
 
 const List = () => {
+  const {mediaArray} = useMedia();
   return (
     <FlatList
       data={mediaArray}
@@ -42,4 +48,5 @@ const List = () => {
     />
   );
 };
+
 export default List;
