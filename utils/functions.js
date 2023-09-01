@@ -5,7 +5,7 @@ const doFetch = async (url, options = {}) => {
     const message = json.error
       ? `${json.message}: ${json.error}`
       : json.message;
-    throw new Error(message || response.statusText);
+    throw new Error(message + '!' || response.statusText + '?');
   }
   return json;
 };
