@@ -8,7 +8,7 @@ import {MainContext} from '../contexts/MainContext';
 
 const LoginForm = () => {
   const {postLogin} = useAuthentication();
-  const {setIsLoggedIn} = useContext(MainContext);
+  const {setIsLoggedIn, setUser} = useContext(MainContext);
   const {
     control,
     handleSubmit,
@@ -29,6 +29,7 @@ const LoginForm = () => {
       // use loginResponse.user for storing token & userdata
       await AsyncStorage.setItem('userToken', loginResponse.token);
       setIsLoggedIn(true);
+      setUser(loginResponse.user);
     } catch (error) {
       console.error(error);
       // TODO: Notify user about failed login?

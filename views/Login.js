@@ -7,7 +7,7 @@ import {useUser} from '../components/hooks/apiHooks';
 import LoginForm from '../components/LoginForm';
 
 const Login = ({navigation}) => {
-  const {setIsLoggedIn} = useContext(MainContext);
+  const {setIsLoggedIn, setUser} = useContext(MainContext);
   const {getUserByToken} = useUser();
 
   const checkToken = async () => {
@@ -18,6 +18,7 @@ const Login = ({navigation}) => {
       console.log('userdata', userData);
       if (userData) {
         setIsLoggedIn(true);
+        setUser(userData);
       }
     } catch (error) {
       console.log('checktoken error', error);
@@ -31,6 +32,7 @@ const Login = ({navigation}) => {
     <View style={styles.container}>
       <Text>Login</Text>
       <LoginForm />
+      <RegisterForm />
     </View>
   );
 };
