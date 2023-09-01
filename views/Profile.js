@@ -1,12 +1,23 @@
-import React from 'react';
-import {StatusBar} from 'expo-status-bar';
-import {SafeAreaView, Platform, StyleSheet, Text} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, {useContext} from 'react';
+import {Button, Platform, SafeAreaView, StyleSheet, Text} from 'react-native';
+import {MainContext} from '../contexts/MainContext';
 
 const Profile = (props) => {
+  const {setIsLoggedIn} = useContext(MainContext);
+  const logOut = async () => {
+    console.log('profile, logout');
+    try {
+      await AsyncStorage.clear();
+      setIsLoggedIn(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <SafeAreaView style={styles.container}>
       <Text>Profile view</Text>
-      <StatusBar style="auto" />
+      <Button title="Log out!" onPress={logOut} />
     </SafeAreaView>
   );
 };
@@ -20,7 +31,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
-
-Profile.propTypes = {};
 
 export default Profile;
