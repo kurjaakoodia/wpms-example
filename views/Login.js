@@ -3,17 +3,16 @@ import {StyleSheet, View, Text, Button} from 'react-native';
 import PropTypes from 'prop-types';
 import {MainContext} from '../contexts/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useAuthentication} from '../components/hooks/apiHooks';
+import useAuthentication from '../components/hooks/apiHooks';
 
 const Login = ({navigation}) => {
-  // props is needed for navigation
   const {setIsLoggedIn} = useContext(MainContext);
   const {postLogin} = useAuthentication();
 
   const checkToken = async () => {
     try {
       const token = await AsyncStorage.getItem('userToken');
-      // hardkoodattu tokenin validaatio
+      // hardcoded token
       if (token === 'abcde') {
         setIsLoggedIn(true);
       }
@@ -21,28 +20,25 @@ const Login = ({navigation}) => {
       console.error(error);
     }
   };
-
   useEffect(() => {
     checkToken();
   }, []);
 
   const logIn = async () => {
-    console.log('Login button pressed');
+    console.log('Button pressed');
     try {
       const loginResponse = await postLogin({
         username: 'atte',
         password: '12345',
       });
       console.log('login response', loginResponse);
-
-      // TODO: fix dofetch() to display errors from API
-      // use loginResponse.user for storing token and userdata
-
+      // TODO: fix doFetch() to display errors from API (e.g. bad user/pw)
+      // use loginResponse.user for storing token & userdata
       await AsyncStorage.setItem('userToken', 'abcde');
       setIsLoggedIn(true);
     } catch (error) {
       console.error(error);
-      // TODO: Notify user of a login error
+      // TODO: Notify user about failed login?
     }
   };
   return (

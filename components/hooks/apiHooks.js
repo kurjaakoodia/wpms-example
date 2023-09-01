@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
-import {apiUrl} from '../utils/app-config';
-import {doFetch} from '../utils/functions';
+import apiUrl from '../../utils/app-config';
+import {doFetch} from '../../utils/functions';
 
 const useMedia = () => {
   const [mediaArray, setMediaArray] = useState([]);
