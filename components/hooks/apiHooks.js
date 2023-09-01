@@ -1,7 +1,6 @@
-import {useState} from 'react';
-import {apiUrl} from '../../utils/app-config';
-import {useEffect} from 'react';
-import {doFetch} from '../../utils/functions';
+import {useEffect, useState} from 'react';
+import {apiUrl} from '../utils/app-config';
+import {doFetch} from '../utils/functions';
 
 const useMedia = () => {
   const [mediaArray, setMediaArray] = useState([]);
@@ -27,21 +26,26 @@ const useMedia = () => {
   useEffect(() => {
     loadMedia();
   }, []);
+
   return {mediaArray};
 };
 
 const useAuthentication = () => {
-  const postLogin = async () => {
+  const postLogin = async (user) => {
+    console.log(user);
     try {
-      await doFetch(apiUrl + 'login', {
+      return await doFetch(apiUrl + 'login', {
         method: 'POST',
-        headers: {'Content-type': 'application/json'},
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(user),
       });
     } catch (error) {
       console.error('postLogin error', error);
     }
   };
+
   return {postLogin};
 };
 
