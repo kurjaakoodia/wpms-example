@@ -1,16 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useContext, useEffect, useState} from 'react';
-import {
-  Button,
-  Image,
-  Platform,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-} from 'react-native';
 import {useTag} from '../components/hooks/apiHooks';
 import {MainContext} from '../contexts/MainContext';
 import {mediaUrl} from '../utils/app-config';
+import {Card, Icon, Button, ListItem} from '@rneui/base';
 
 const Profile = (props) => {
   const [avatars, setAvatar] = useState('');
@@ -42,30 +35,28 @@ const Profile = (props) => {
   }, []);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Text>Profile view</Text>
+    <Card>
+      <Card.Title>{user.username}</Card.Title>
       <Button title="Log out!" onPress={logOut} />
-      <Text>{user.username}</Text>
-      <Image source={{uri: avatars}} />
-      <Text>{user.email}</Text>
-      <Text>{user.full_name}</Text>
-      <Text>{user.user_id}</Text>
-    </SafeAreaView>
+      <ListItem>
+        <ListItem.Title>{user.username}</ListItem.Title>
+      </ListItem>
+      <Card.Image source={{uri: avatars}} />
+      <ListItem>
+        <Icon name="email" />
+        <ListItem.Title>{user.email}</ListItem.Title>
+      </ListItem>
+      {user.full_name && (
+        <ListItem>
+          <Icon name="person" />
+          <ListItem.Title>{user.full_name}</ListItem.Title>
+        </ListItem>
+      )}
+      <ListItem>
+        <ListItem.Title>{user.user_id}</ListItem.Title>
+      </ListItem>
+    </Card>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: Platform.OS === 'android' ? 30 : 0,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  image: {
-    width: 300,
-    height: 300,
-  },
-});
 
 export default Profile;
