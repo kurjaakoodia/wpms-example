@@ -47,6 +47,7 @@ const useAuthentication = () => {
   };
   return {postLogin};
 };
+
 const postUser = async (userData) => {
   const options = {
     method: 'POST',
@@ -55,6 +56,7 @@ const postUser = async (userData) => {
   };
   return await doFetch(apiUrl + 'users', options);
 };
+
 const useUser = () => {
   const getUserByToken = async (token) => {
     const options = {
@@ -66,4 +68,15 @@ const useUser = () => {
   return {getUserByToken, postUser};
 };
 
-export {useMedia, useAuthentication, useUser};
+const useTag = () => {
+  const getFilesByTag = async (tag) => {
+    try {
+      return await doFetch(apiUrl + 'tags/' + tag);
+    } catch (error) {
+      throw new Error('getFilesByTag error', error.message);
+    }
+  };
+  return {getFilesByTag};
+};
+
+export {useMedia, useAuthentication, useUser, useTag};

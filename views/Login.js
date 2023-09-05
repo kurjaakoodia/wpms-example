@@ -22,6 +22,7 @@ const Login = ({navigation}) => {
       const token = await AsyncStorage.getItem('userToken');
       // hardcoded token
       const userData = await getUserByToken(token);
+      console.log('token', token);
       console.log('userdata', userData);
       if (userData) {
         setIsLoggedIn(true);
