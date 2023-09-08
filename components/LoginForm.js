@@ -1,14 +1,16 @@
-import {View, Text, TextInput, Button} from 'react-native';
+import {Text, Button} from 'react-native';
 import React, {useContext} from 'react';
 import {useForm} from 'react-hook-form';
 import {Controller} from 'react-hook-form';
 import {useAuthentication} from './hooks/apiHooks';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {MainContext} from '../contexts/MainContext';
+import {Card, Input} from '@rneui/base';
 
 const LoginForm = () => {
   const {postLogin} = useAuthentication();
   const {setIsLoggedIn, setUser} = useContext(MainContext);
+
   const {
     control,
     handleSubmit,
@@ -21,32 +23,31 @@ const LoginForm = () => {
   });
 
   const logIn = async (loginData) => {
-    console.log('Button pressed');
     try {
       const loginResponse = await postLogin(loginData);
       console.log('login response', loginResponse);
-      // TODO: fix doFetch() to display errors from API (e.g. bad user/pw)
+      // TODO: fix dofetch() to display errors from API (e.g. when bad user/pw)
       // use loginResponse.user for storing token & userdata
       await AsyncStorage.setItem('userToken', loginResponse.token);
       setIsLoggedIn(true);
       setUser(loginResponse.user);
     } catch (error) {
       console.error(error);
-      // TODO: Notify user about failed login?
+      // TODO: notify user about failed login?
     }
   };
 
   return (
-    <View>
-      <Text>Login</Text>
+    <Card>
+      <Card.Title>Login Form</Card.Title>
       <Controller
         control={control}
         rules={{
           required: true,
         }}
         render={({field: {onChange, onBlur, value}}) => (
-          <TextInput
-            placeholder="username"
+          <Input
+            placeholder="Username"
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
@@ -63,20 +64,19 @@ const LoginForm = () => {
           maxLength: 100,
         }}
         render={({field: {onChange, onBlur, value}}) => (
-          <TextInput
+          <Input
             placeholder="password"
-            secureTextEntry={true}
+            secureTextEntry
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
-            autoCapitalize="none"
           />
         )}
         name="password"
       />
 
       <Button title="Submit" onPress={handleSubmit(logIn)} />
-    </View>
+    </Card>
   );
 };
 

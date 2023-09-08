@@ -1,34 +1,47 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Text, StyleSheet, SafeAreaView, Platform, Image} from 'react-native';
+import {Text} from 'react-native';
 import {mediaUrl} from '../utils/app-config';
+import {Card, ListItem, Icon} from '@rneui/base';
+import {formatDate} from '../utils/functions';
 
 const Single = ({route, navigation}) => {
-  const singleMedia = route.params;
-  console.log('route params', route.params);
+  // console.log('route params', route.params);
+  const {
+    title,
+    description,
+    filename,
+    time_added: timeAdded,
+    user_id: userId,
+    filesize,
+  } = route.params;
+  // Show full image and metadata
   return (
-    <SafeAreaView style={styles.container}>
-      <Image
-        style={{width: '45%', height: '45%', resizeMode: 'contain'}}
-        source={{uri: mediaUrl + singleMedia.filename}}
+    <Card>
+      <Card.Title>{title}</Card.Title>
+      <Card.Image
+        source={{uri: mediaUrl + filename}}
+        resizeMode="center"
+        style={{height: 300}}
       />
-      <Text>{singleMedia.title}</Text>
-      <Text>{singleMedia.description}</Text>
-      <Text>{singleMedia.time_added}</Text>
-      <Text>{singleMedia.user_id}</Text>
-    </SafeAreaView>
+      <ListItem>
+        <Text>{description}</Text>
+      </ListItem>
+      <ListItem>
+        <Icon name="save" />
+        <Text>{Math.round(filesize / 1024)} kB</Text>
+      </ListItem>
+      <ListItem>
+        <Icon name="today" />
+        <Text>{formatDate(timeAdded)}</Text>
+      </ListItem>
+      <ListItem>
+        <Icon name="person" />
+        <Text>id: {userId}</Text>
+      </ListItem>
+    </Card>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: Platform.OS === 'android' ? 30 : 0,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 Single.propTypes = {
   navigation: PropTypes.object,
