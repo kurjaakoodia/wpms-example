@@ -4,6 +4,8 @@ import {useTag} from '../components/hooks/apiHooks';
 import {MainContext} from '../contexts/MainContext';
 import {mediaUrl} from '../utils/app-config';
 import {Card, Icon, Button, ListItem} from '@rneui/base';
+import ProfileForm from '../components/ProfileForm';
+import {ScrollView} from 'react-native';
 
 const Profile = (props) => {
   const [avatars, setAvatar] = useState('');
@@ -35,27 +37,30 @@ const Profile = (props) => {
   }, []);
 
   return (
-    <Card>
-      <Card.Title>{user.username}</Card.Title>
-      <Button title="Log out!" onPress={logOut} />
-      <ListItem>
-        <ListItem.Title>{user.username}</ListItem.Title>
-      </ListItem>
-      <Card.Image source={{uri: avatars}} />
-      <ListItem>
-        <Icon name="email" />
-        <ListItem.Title>{user.email}</ListItem.Title>
-      </ListItem>
-      {user.full_name && (
+    <ScrollView>
+      <Card>
+        <Card.Title>{user.username}</Card.Title>
+        <Card.Image source={{uri: avatars}} />
+        <Button title="Log out!" onPress={logOut} />
         <ListItem>
-          <Icon name="person" />
-          <ListItem.Title>{user.full_name}</ListItem.Title>
+          <ListItem.Title>{user.username}</ListItem.Title>
         </ListItem>
-      )}
-      <ListItem>
-        <ListItem.Title>{user.user_id}</ListItem.Title>
-      </ListItem>
-    </Card>
+        <ListItem>
+          <Icon name="email" />
+          <ListItem.Title>{user.email}</ListItem.Title>
+        </ListItem>
+        {user.full_name && (
+          <ListItem>
+            <Icon name="person" />
+            <ListItem.Title>{user.full_name}</ListItem.Title>
+          </ListItem>
+        )}
+        <ListItem>
+          <ListItem.Title>{user.user_id}</ListItem.Title>
+        </ListItem>
+        <ProfileForm user={user} />
+      </Card>
+    </ScrollView>
   );
 };
 
