@@ -64,7 +64,7 @@ const useUser = () => {
 
   const checkUsername = async (username) => {
     try {
-      const response = await doFetch(`${apiUrl}/users/username/${username}`);
+      const response = await doFetch(`${apiUrl}users/username/${username}`);
       return response.available;
     } catch {
       throw new Error('checkusername Error', console.error.message);
