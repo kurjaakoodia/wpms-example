@@ -3,8 +3,10 @@ import {useForm} from 'react-hook-form';
 import {Controller} from 'react-hook-form';
 import {useUser} from './hooks/apiHooks';
 import {Card, Button, Input} from '@rneui/themed';
+import {Alert} from 'react-native';
+import {PropTypes} from 'prop-types';
 
-const RegisterForm = () => {
+const RegisterForm = ({setToggleRegister}) => {
   const {postUser, checkUsername} = useUser();
   const {
     control,
@@ -18,17 +20,20 @@ const RegisterForm = () => {
       password: '',
       email: '',
       full_name: '',
-      mode: 'onBlur',
     },
+    mode: 'onBlur',
   });
 
   const register = async (userData) => {
     try {
-      await postUser(userData);
+      delete userData.confirm_password;
+      const registerResult = await postUser(userData);
       reset();
+      Alert.alert('Success!', registerResult.message);
+      setToggleRegister(false);
     } catch (error) {
       console.error(error);
-      // TODO: Notify user about failed login?
+      Alert.alert('Error!', error.message);
     }
   };
 
@@ -147,6 +152,10 @@ const RegisterForm = () => {
       <Button title="Register" onPress={handleSubmit(register)} />
     </Card>
   );
+};
+
+RegisterForm.propTypes = {
+  setToggleRegister: PropTypes.func,
 };
 
 export default RegisterForm;

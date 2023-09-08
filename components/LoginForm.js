@@ -8,7 +8,6 @@ import {Card, Input, Button} from '@rneui/themed';
 const LoginForm = () => {
   const {postLogin} = useAuthentication();
   const {setIsLoggedIn, setUser} = useContext(MainContext);
-
   const {
     control,
     handleSubmit,
@@ -29,7 +28,6 @@ const LoginForm = () => {
       setUser(loginResponse.user);
     } catch (error) {
       console.error(error);
-      // TODO: notify user about failed login?
     }
   };
 

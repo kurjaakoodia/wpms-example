@@ -33,17 +33,13 @@ const useMedia = () => {
 const useAuthentication = () => {
   const postLogin = async (user) => {
     console.log(user);
-    try {
-      return await doFetch(apiUrl + 'login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(user),
-      });
-    } catch (error) {
-      console.error('postLogin error', error);
-    }
+    return await doFetch(apiUrl + 'login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(user),
+    });
   };
   return {postLogin};
 };

@@ -20,7 +20,7 @@ const Login = ({navigation}) => {
   const checkToken = async () => {
     try {
       const token = await AsyncStorage.getItem('userToken');
-      // hardcoded token
+      // hardcoded token validation
       const userData = await getUserByToken(token);
       console.log('token', token);
       console.log('userdata', userData);
@@ -45,7 +45,11 @@ const Login = ({navigation}) => {
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
-        {toggleRegister ? <RegisterForm /> : <LoginForm />}
+        {toggleRegister ? (
+          <RegisterForm setToggleRegister={setToggleRegister} />
+        ) : (
+          <LoginForm />
+        )}
         <Button
           onPress={() => {
             setToggleRegister(!toggleRegister);
