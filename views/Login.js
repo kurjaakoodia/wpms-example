@@ -4,7 +4,6 @@ import {
   Platform,
   TouchableOpacity,
   Keyboard,
-  Button,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import {MainContext} from '../contexts/MainContext';
@@ -12,6 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useUser} from '../components/hooks/apiHooks';
 import LoginForm from '../components/LoginForm';
 import RegisterForm from '../components/RegisterForm';
+import {Button} from '@rneui/themed';
 
 const Login = ({navigation}) => {
   const {setIsLoggedIn, setUser} = useContext(MainContext);

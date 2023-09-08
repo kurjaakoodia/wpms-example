@@ -1,11 +1,9 @@
-import {Text} from 'react-native';
 import React, {useContext} from 'react';
-import {useForm} from 'react-hook-form';
-import {Controller} from 'react-hook-form';
+import {useForm, Controller} from 'react-hook-form';
 import {useAuthentication} from './hooks/apiHooks';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {MainContext} from '../contexts/MainContext';
-import {Card, Input, Button} from '@rneui/base';
+import {Card, Input, Button} from '@rneui/themed';
 
 const LoginForm = () => {
   const {postLogin} = useAuthentication();
@@ -26,8 +24,6 @@ const LoginForm = () => {
     try {
       const loginResponse = await postLogin(loginData);
       console.log('login response', loginResponse);
-      // TODO: fix dofetch() to display errors from API (e.g. when bad user/pw)
-      // use loginResponse.user for storing token & userdata
       await AsyncStorage.setItem('userToken', loginResponse.token);
       setIsLoggedIn(true);
       setUser(loginResponse.user);
@@ -43,7 +39,8 @@ const LoginForm = () => {
       <Controller
         control={control}
         rules={{
-          required: true,
+          maxLength: 100,
+          required: {value: true, message: 'This is required.'},
         }}
         render={({field: {onChange, onBlur, value}}) => (
           <Input
@@ -52,16 +49,17 @@ const LoginForm = () => {
             onChangeText={onChange}
             value={value}
             autoCapitalize="none"
+            errorMessage={errors.username?.message}
           />
         )}
         name="username"
       />
-      {errors.username && <Text>This is required.</Text>}
 
       <Controller
         control={control}
         rules={{
           maxLength: 100,
+          required: {value: true, message: 'This is required.'},
         }}
         render={({field: {onChange, onBlur, value}}) => (
           <Input
@@ -70,12 +68,13 @@ const LoginForm = () => {
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
+            errorMessage={errors.password?.message}
           />
         )}
         name="password"
       />
 
-      <Button onPress={handleSubmit(logIn)} />
+      <Button title="Login" onPress={handleSubmit(logIn)} />
     </Card>
   );
 };

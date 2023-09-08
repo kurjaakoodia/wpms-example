@@ -2,13 +2,14 @@ import React from 'react';
 import {useForm} from 'react-hook-form';
 import {Controller} from 'react-hook-form';
 import {useUser} from './hooks/apiHooks';
-import {Card, Button, Text, TextInput} from '@rneui/base';
+import {Card, Button, Input} from '@rneui/themed';
 
 const RegisterForm = () => {
   const {postUser, checkUsername} = useUser();
   const {
     control,
     handleSubmit,
+    getValues,
     formState: {errors},
     reset,
   } = useForm({
@@ -37,8 +38,8 @@ const RegisterForm = () => {
       <Controller
         control={control}
         rules={{
-          required: true,
-          minLength: 3,
+          required: {value: true, message: 'This is required.'},
+          minLength: {value: 3, message: 'Min length is 3 characters'},
           validate: async (value) => {
             try {
               console.log('username validator', value);
@@ -50,7 +51,7 @@ const RegisterForm = () => {
           },
         }}
         render={({field: {onChange, onBlur, value}}) => (
-          <TextInput
+          <Input
             placeholder="username"
             onBlur={onBlur}
             onChangeText={onChange}
@@ -61,25 +62,23 @@ const RegisterForm = () => {
         )}
         name="username"
       />
-      {errors.username?.type === 'required' && <Text>This is required.</Text>}
-      {errors.username?.type === 'minLength' && (
-        <Text>ming length is 3 characters</Text>
-      )}
-      <Text>{errors.username?.message}</Text>
 
       <Controller
         control={control}
         rules={{
           maxLength: 100,
+          required: {value: true, message: 'This is required.'},
+          minLength: {value: 5, message: 'Min length is 5 characters'},
         }}
         render={({field: {onChange, onBlur, value}}) => (
-          <TextInput
+          <Input
             placeholder="password"
             secureTextEntry={true}
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
             autoCapitalize="none"
+            errorMessage={errors.password?.message}
           />
         )}
         name="password"
@@ -87,37 +86,65 @@ const RegisterForm = () => {
       <Controller
         control={control}
         rules={{
-          required: true,
+          maxLength: 100,
+          required: {value: true, message: 'This is required.'},
+          validate: (value) => {
+            const {password} = getValues();
+            console.log('Get values', password);
+            return value === password ? true : 'Passwords do not match';
+          },
         }}
         render={({field: {onChange, onBlur, value}}) => (
-          <TextInput
+          <Input
+            placeholder="Confirm password"
+            secureTextEntry={true}
+            onBlur={onBlur}
+            onChangeText={onChange}
+            value={value}
+            autoCapitalize="none"
+            errorMessage={errors.password?.message}
+          />
+        )}
+        name="confirm_password"
+      />
+      <Controller
+        control={control}
+        rules={{
+          required: {value: true, message: 'This is required.'},
+          pattern: {
+            // TODO: add better regexp for email
+            value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/,
+            message: 'must be a valid email',
+          },
+        }}
+        render={({field: {onChange, onBlur, value}}) => (
+          <Input
             placeholder="email"
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
             autoCapitalize="none"
+            errorMessage={errors.email?.message}
           />
         )}
         name="email"
       />
       <Controller
         control={control}
-        rules={{
-          required: true,
-        }}
+        rules={{minLength: {value: 3, message: 'Min length is 3 characters'}}}
         render={({field: {onChange, onBlur, value}}) => (
-          <TextInput
+          <Input
             placeholder="full name"
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
             autoCapitalize="none"
+            errorMessage={errors.full_name?.message}
           />
         )}
         name="full_name"
       />
-
-      <Button onPress={handleSubmit(register)} />
+      <Button title="Register" onPress={handleSubmit(register)} />
     </Card>
   );
 };
