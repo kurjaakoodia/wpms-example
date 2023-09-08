@@ -1,11 +1,11 @@
-import {View, Text, TextInput, Button} from 'react-native';
 import React from 'react';
 import {useForm} from 'react-hook-form';
 import {Controller} from 'react-hook-form';
 import {useUser} from './hooks/apiHooks';
+import {Card, Button, Text, TextInput} from '@rneui/base';
 
 const RegisterForm = () => {
-  const {postUser} = useUser();
+  const {postUser, checkUsername} = useUser();
   const {
     control,
     handleSubmit,
@@ -17,6 +17,7 @@ const RegisterForm = () => {
       password: '',
       email: '',
       full_name: '',
+      mode: 'onBlur',
     },
   });
 
@@ -31,12 +32,22 @@ const RegisterForm = () => {
   };
 
   return (
-    <View>
-      <Text>Register</Text>
+    <Card>
+      <Card.Title>Register</Card.Title>
       <Controller
         control={control}
         rules={{
           required: true,
+          minLength: 3,
+          validate: async (value) => {
+            try {
+              console.log('username validator', value);
+              const isAvailable = await checkUsername(value);
+              return isAvailable ? isAvailable : 'Username taken';
+            } catch (error) {
+              console.error(error);
+            }
+          },
         }}
         render={({field: {onChange, onBlur, value}}) => (
           <TextInput
@@ -45,11 +56,16 @@ const RegisterForm = () => {
             onChangeText={onChange}
             value={value}
             autoCapitalize="none"
+            errorMessage={errors.message}
           />
         )}
         name="username"
       />
-      {errors.username && <Text>This is required.</Text>}
+      {errors.username?.type === 'required' && <Text>This is required.</Text>}
+      {errors.username?.type === 'minLength' && (
+        <Text>ming length is 3 characters</Text>
+      )}
+      <Text>{errors.username?.message}</Text>
 
       <Controller
         control={control}
@@ -64,6 +80,7 @@ const RegisterForm = () => {
             onChangeText={onChange}
             value={value}
             autoCapitalize="none"
+            errorMessage={errors.message}
           />
         )}
         name="password"
@@ -80,6 +97,7 @@ const RegisterForm = () => {
             onChangeText={onChange}
             value={value}
             autoCapitalize="none"
+            errorMessage={errors.message}
           />
         )}
         name="email"
@@ -96,13 +114,14 @@ const RegisterForm = () => {
             onChangeText={onChange}
             value={value}
             autoCapitalize="none"
+            errorMessage={errors.message}
           />
         )}
         name="full_name"
       />
 
       <Button title="Submit" onPress={handleSubmit(register)} />
-    </View>
+    </Card>
   );
 };
 

@@ -75,7 +75,7 @@ const LoginForm = () => {
         name="password"
       />
 
-      <Button title="Submit" onPress={handleSubmit(logIn)} />
+      <Button title="Login" onPress={handleSubmit(logIn)} />
     </Card>
   );
 };
