@@ -3,6 +3,7 @@ import React from 'react';
 import {useForm} from 'react-hook-form';
 import {Controller} from 'react-hook-form';
 import {useUser} from './hooks/apiHooks';
+import { Card } from '@rneui/base';
 
 const RegisterForm = () => {
   const {postUser} = useUser();
@@ -31,8 +32,8 @@ const RegisterForm = () => {
   };
 
   return (
-    <View>
-      <Text>Register</Text>
+    <Card>
+      <Card.Title>Register</Card.Title>
       <Controller
         control={control}
         rules={{
@@ -102,7 +103,7 @@ const RegisterForm = () => {
       />
 
       <Button title="Submit" onPress={handleSubmit(register)} />
-    </View>
+    </Card>
   );
 };
 
