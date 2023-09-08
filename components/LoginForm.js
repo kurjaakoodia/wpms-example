@@ -1,11 +1,11 @@
-import {Text, Button} from 'react-native';
+import {Text} from 'react-native';
 import React, {useContext} from 'react';
 import {useForm} from 'react-hook-form';
 import {Controller} from 'react-hook-form';
 import {useAuthentication} from './hooks/apiHooks';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {MainContext} from '../contexts/MainContext';
-import {Card, Input} from '@rneui/base';
+import {Card, Input, Button} from '@rneui/base';
 
 const LoginForm = () => {
   const {postLogin} = useAuthentication();
@@ -75,7 +75,7 @@ const LoginForm = () => {
         name="password"
       />
 
-      <Button title="Login" onPress={handleSubmit(logIn)} />
+      <Button onPress={handleSubmit(logIn)} />
     </Card>
   );
 };

@@ -56,7 +56,7 @@ const RegisterForm = () => {
             onChangeText={onChange}
             value={value}
             autoCapitalize="none"
-            errorMessage={errors.message}
+            errorMessage={errors.username?.message}
           />
         )}
         name="username"
@@ -80,7 +80,6 @@ const RegisterForm = () => {
             onChangeText={onChange}
             value={value}
             autoCapitalize="none"
-            errorMessage={errors.message}
           />
         )}
         name="password"
@@ -97,7 +96,6 @@ const RegisterForm = () => {
             onChangeText={onChange}
             value={value}
             autoCapitalize="none"
-            errorMessage={errors.message}
           />
         )}
         name="email"
@@ -114,13 +112,12 @@ const RegisterForm = () => {
             onChangeText={onChange}
             value={value}
             autoCapitalize="none"
-            errorMessage={errors.message}
           />
         )}
         name="full_name"
       />
 
-      <Button title="Submit" onPress={handleSubmit(register)} />
+      <Button onPress={handleSubmit(register)} />
     </Card>
   );
 };
