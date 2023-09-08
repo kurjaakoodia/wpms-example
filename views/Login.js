@@ -29,9 +29,10 @@ const Login = ({navigation}) => {
         setUser(userData);
       }
     } catch (error) {
-      console.log('checktoken error', error);
+      console.log('checkToken', error);
     }
   };
+
   useEffect(() => {
     checkToken();
   }, []);

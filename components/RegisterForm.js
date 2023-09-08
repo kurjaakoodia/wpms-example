@@ -32,7 +32,6 @@ const RegisterForm = ({setToggleRegister}) => {
       Alert.alert('Success!', registerResult.message);
       setToggleRegister(false);
     } catch (error) {
-      console.error(error);
       Alert.alert('Error!', error.message);
     }
   };
@@ -47,8 +46,8 @@ const RegisterForm = ({setToggleRegister}) => {
           minLength: {value: 3, message: 'Min length is 3 characters'},
           validate: async (value) => {
             try {
-              console.log('username validator', value);
               const isAvailable = await checkUsername(value);
+              console.log('username available?', value, isAvailable);
               return isAvailable ? isAvailable : 'Username taken';
             } catch (error) {
               console.error(error);
@@ -118,7 +117,7 @@ const RegisterForm = ({setToggleRegister}) => {
           required: {value: true, message: 'This is required.'},
           pattern: {
             // TODO: add better regexp for email
-            value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/,
+            value: /\S+@\S+\.\S+$/,
             message: 'must be a valid email',
           },
         }}
