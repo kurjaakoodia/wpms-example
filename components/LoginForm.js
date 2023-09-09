@@ -1,11 +1,10 @@
-import {Text, Button} from 'react-native';
 import React, {useContext} from 'react';
 import {useForm} from 'react-hook-form';
 import {Controller} from 'react-hook-form';
 import {useAuthentication} from './hooks/apiHooks';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {MainContext} from '../contexts/MainContext';
-import {Card, Input} from '@rneui/base';
+import {Card, Input, Button, Text} from '@rneui/themed';
 
 const LoginForm = () => {
   const {postLogin} = useAuthentication();
@@ -26,20 +25,16 @@ const LoginForm = () => {
     try {
       const loginResponse = await postLogin(loginData);
       console.log('login response', loginResponse);
-      // TODO: fix dofetch() to display errors from API (e.g. when bad user/pw)
-      // use loginResponse.user for storing token & userdata
       await AsyncStorage.setItem('userToken', loginResponse.token);
       setIsLoggedIn(true);
       setUser(loginResponse.user);
     } catch (error) {
       console.error(error);
-      // TODO: notify user about failed login?
     }
   };
 
   return (
-    <Card>
-      <Card.Title>Login Form</Card.Title>
+    <Card containerStyle={{width: 280}}>
       <Controller
         control={control}
         rules={{
@@ -74,7 +69,6 @@ const LoginForm = () => {
         )}
         name="password"
       />
-
       <Button title="Submit" onPress={handleSubmit(logIn)} />
     </Card>
   );

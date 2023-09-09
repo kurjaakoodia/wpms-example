@@ -1,9 +1,9 @@
-import {View, Text, TextInput, Button} from 'react-native';
+import {Text} from 'react-native';
 import React from 'react';
 import {useForm} from 'react-hook-form';
 import {Controller} from 'react-hook-form';
 import {useUser} from './hooks/apiHooks';
-import { Card } from '@rneui/base';
+import {Card, Input, Button} from '@rneui/themed';
 
 const RegisterForm = () => {
   const {postUser} = useUser();
@@ -11,7 +11,6 @@ const RegisterForm = () => {
     control,
     handleSubmit,
     formState: {errors},
-    reset,
   } = useForm({
     defaultValues: {
       username: '',
@@ -24,24 +23,20 @@ const RegisterForm = () => {
   const register = async (userData) => {
     try {
       await postUser(userData);
-      reset();
     } catch (error) {
       console.error(error);
-      // TODO: Notify user about failed login?
     }
   };
-
   return (
-    <Card>
-      <Card.Title>Register</Card.Title>
+    <Card containerStyle={{width: 280}}>
       <Controller
         control={control}
         rules={{
           required: true,
         }}
         render={({field: {onChange, onBlur, value}}) => (
-          <TextInput
-            placeholder="username"
+          <Input
+            placeholder="Username"
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
@@ -58,50 +53,48 @@ const RegisterForm = () => {
           maxLength: 100,
         }}
         render={({field: {onChange, onBlur, value}}) => (
-          <TextInput
+          <Input
             placeholder="password"
-            secureTextEntry={true}
+            secureTextEntry
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
-            autoCapitalize="none"
           />
         )}
         name="password"
       />
+
       <Controller
         control={control}
         rules={{
-          required: true,
+          maxLength: 100,
         }}
         render={({field: {onChange, onBlur, value}}) => (
-          <TextInput
+          <Input
             placeholder="email"
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
-            autoCapitalize="none"
           />
         )}
         name="email"
       />
+
       <Controller
         control={control}
         rules={{
-          required: true,
+          maxLength: 100,
         }}
         render={({field: {onChange, onBlur, value}}) => (
-          <TextInput
+          <Input
             placeholder="full name"
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
-            autoCapitalize="none"
           />
         )}
         name="full_name"
       />
-
       <Button title="Submit" onPress={handleSubmit(register)} />
     </Card>
   );

@@ -37,11 +37,12 @@ const Profile = (props) => {
   return (
     <Card>
       <Card.Title>{user.username}</Card.Title>
+      <Card.Image source={{uri: avatars}} />
       <Button title="Log out!" onPress={logOut} />
       <ListItem>
+        <Icon name="person" />
         <ListItem.Title>{user.username}</ListItem.Title>
       </ListItem>
-      <Card.Image source={{uri: avatars}} />
       <ListItem>
         <Icon name="email" />
         <ListItem.Title>{user.email}</ListItem.Title>

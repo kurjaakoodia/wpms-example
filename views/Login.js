@@ -1,10 +1,12 @@
 import React, {useContext, useEffect} from 'react';
 import {
   StyleSheet,
-  View,
   Text,
   KeyboardAvoidingView,
   Platform,
+  Keyboard,
+  TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import {MainContext} from '../contexts/MainContext';
@@ -20,7 +22,6 @@ const Login = ({navigation}) => {
   const checkToken = async () => {
     try {
       const token = await AsyncStorage.getItem('userToken');
-      // hardcoded token
       const userData = await getUserByToken(token);
       console.log('token', token);
       console.log('userdata', userData);
@@ -29,24 +30,32 @@ const Login = ({navigation}) => {
         setUser(userData);
       }
     } catch (error) {
-      console.log('checktoken error', error);
+      console.log('checkToken', error);
     }
   };
+
   useEffect(() => {
     checkToken();
   }, []);
 
   return (
-    <View style={styles.container}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.container}
+    <ScrollView>
+      <TouchableOpacity
+        onPress={() => Keyboard.dismiss()}
+        style={{flex: 1}}
+        activeOpacity={1}
       >
-        <LoginForm />
-        <RegisterForm />
-      </KeyboardAvoidingView>
-      <Text>Login</Text>
-    </View>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={styles.container}
+        >
+          <Text>Login</Text>
+          <LoginForm />
+          <Text>Register</Text>
+          <RegisterForm />
+        </KeyboardAvoidingView>
+      </TouchableOpacity>
+    </ScrollView>
   );
 };
 
