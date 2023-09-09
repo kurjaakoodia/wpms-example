@@ -1,40 +1,42 @@
-import {Image, TouchableOpacity, View} from 'react-native';
 import PropTypes from 'prop-types';
 import {mediaUrl} from '../utils/app-config';
-import {ListItem as RNEListItem, Avatar, Button} from '@rneui/themed';
+import {Avatar, Button, ListItem as RNEListItem} from '@rneui/themed';
+import React from 'react';
+import {TouchableOpacity, View} from 'react-native';
 
 const ListItem = ({singleMedia, navigation}) => {
   return (
     <TouchableOpacity>
-      <RNEListItem bottomDivider containerStyle={{width: '100%'}}>
-        <View style={{flexDirection: 'row', aligntItems: 'center'}}>
+      <RNEListItem
+        bottomDivider
+        containerStyle={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
+        <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
           <Avatar
-            size="large"
+            size={100}
             source={{uri: mediaUrl + singleMedia.thumbnails.w160}}
           />
+          <View style={{flex: 1, marginLeft: 10}}>
+            <RNEListItem.Title style={{flex: 1}}>
+              {singleMedia.title}
+            </RNEListItem.Title>
+            <RNEListItem.Subtitle style={{flex: 1}}>
+              {singleMedia.description}
+            </RNEListItem.Subtitle>
+          </View>
         </View>
-      </RNEListItem>
-      <Image style={{width: 100, height: 100}} />
-      <RNEListItem.Title>{singleMedia.title}</RNEListItem.Title>
-      <RNEListItem.Subtitle>{singleMedia.description}</RNEListItem.Subtitle>
-      <RNEListItem.ButtonGroup>
         <Button
-          size="sm"
+          title="View"
           onPress={() => {
+            console.log('touched', singleMedia.title);
             navigation.navigate('Single', singleMedia);
           }}
-          containerStyle={{
-            width: '15%',
-            position: 'absolute',
-            right: 10,
-            top: '50%',
-            transform: [{translateY: -10}],
-            borderRadius: 5,
-          }}
-        >
-          View
-        </Button>
-      </RNEListItem.ButtonGroup>
+        />
+      </RNEListItem>
     </TouchableOpacity>
   );
 };
