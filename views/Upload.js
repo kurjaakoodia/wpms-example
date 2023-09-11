@@ -9,14 +9,17 @@ const Upload = () => {
     formState: {errors},
   } = useForm({
     defaultValues: {
-      username: '',
-      password: '',
+      title: '',
+      description: '',
     },
   });
 
+  const upload = async (uploadData) => {
+    console.log('upload', uploadData);
+  };
+
   return (
     <Card>
-      <Card.Title>Login Form</Card.Title>
       <Controller
         control={control}
         rules={{
