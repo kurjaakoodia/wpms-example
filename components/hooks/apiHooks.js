@@ -4,6 +4,7 @@ import {doFetch} from '../../utils/functions';
 
 const useMedia = () => {
   const [mediaArray, setMediaArray] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const loadMedia = async () => {
     try {
@@ -27,7 +28,21 @@ const useMedia = () => {
     loadMedia();
   }, []);
 
-  return {mediaArray};
+  const postMedia = async (mediaData, token) => {
+    setLoading(true);
+    const options = {
+      method: 'PUT',
+      headers: {
+        'x-access-token': token,
+      },
+      body: mediaData,
+    };
+    const uploadResult = await doFetch(apiUrl + 'users', options);
+    setLoading(false);
+    return uploadResult;
+  };
+
+  return {mediaArray, postMedia, loading};
 };
 
 const useAuthentication = () => {
