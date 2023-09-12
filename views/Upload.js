@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Card, Input, Button} from '@rneui/themed';
 import {Controller, useForm} from 'react-hook-form';
 import {Alert, ScrollView, StyleSheet} from 'react-native';
@@ -17,6 +17,7 @@ const Upload = ({navigation}) => {
   const {postMedia} = useMedia();
   const {
     control,
+    reset,
     handleSubmit,
     formState: {errors},
   } = useForm({
@@ -24,6 +25,7 @@ const Upload = ({navigation}) => {
       title: '',
       description: '',
     },
+    mode: 'onBlur',
   });
 
   const upload = async (uploadData) => {
@@ -51,6 +53,7 @@ const Upload = ({navigation}) => {
         {
           text: 'Ok',
           onPress: () => {
+            resetForm();
             navigation.navigate('Home');
           },
         },
@@ -58,6 +61,12 @@ const Upload = ({navigation}) => {
     } catch (error) {
       console.log(error.message);
     }
+  };
+
+  const resetForm = () => {
+    setImage(placeholderImage);
+    setType('image');
+    reset();
   };
 
   const pickImage = async () => {
@@ -128,7 +137,15 @@ const Upload = ({navigation}) => {
           )}
           name="description"
         />
-        <Button loading={true} title="Upload" onPress={handleSubmit(upload)} />
+        <Button
+          loading={true}
+          disabled={
+            image == placeholderImage || errors.description || errors.title
+          }
+          title="Upload"
+          onPress={handleSubmit(upload)}
+        />
+        <Button title="Reset" color={'error'} onPress={resetForm} />
         <Button title="Choose media" onPress={pickImage} />
       </Card>
     </ScrollView>
