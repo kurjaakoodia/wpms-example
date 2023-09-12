@@ -15,7 +15,7 @@ const Home = ({navigation}) => {
   );
 };
 
-Home.prototype = {
+Home.propTypes = {
   navigation: PropTypes.object,
 };
 

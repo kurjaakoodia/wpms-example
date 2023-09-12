@@ -1,14 +1,17 @@
 import React, {useState} from 'react';
 import {Card, Input, Button} from '@rneui/themed';
 import {Controller, useForm} from 'react-hook-form';
-import {ScrollView, StyleSheet} from 'react-native';
+import {Alert, ScrollView, StyleSheet} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import {placeholderImage} from '../utils/app-config';
 import {Video} from 'expo-av';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useMedia} from '../components/hooks/apiHooks';
+import PropTypes from 'prop-types';
+import {MainContext} from '../contexts/MainContext';
 
-const Upload = () => {
+const Upload = ({navigation}) => {
+  const {update, setUpdate} = useContext(MainContext);
   const [image, setImage] = useState(placeholderImage);
   const [type, setType] = useState('image');
   const {postMedia} = useMedia();
@@ -43,6 +46,15 @@ const Upload = () => {
       const token = await AsyncStorage.getItem('userToken');
       const response = await postMedia(formData, token);
       console.log('lataus', response);
+      setUpdate(!update);
+      Alert.alert('Upload', `${response.message}(id: ${response.file_id})`, [
+        {
+          text: 'Ok',
+          onPress: () => {
+            navigation.navigate('Home');
+          },
+        },
+      ]);
     } catch (error) {
       console.log(error.message);
     }
@@ -55,7 +67,9 @@ const Upload = () => {
       aspect: [4, 3],
     });
 
-    console.log(result);
+    // 5* viritelmä kirjaston warningin poistoon
+    // delete result.cancelled;
+    // console.log(result);
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
@@ -129,5 +143,9 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
 });
+
+Upload.propTypes = {
+  navigation: PropTypes.object,
+};
 
 export default Upload;
