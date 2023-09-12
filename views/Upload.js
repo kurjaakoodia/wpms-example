@@ -68,7 +68,7 @@ const Upload = ({navigation}) => {
       ]);
     } catch (error) {
       console.log(error.message);
-      Alert.alert('Error!', error.message);
+      Alert.alert('Error! ' + error.message);
     }
   };
 
