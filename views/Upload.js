@@ -3,10 +3,10 @@ import {Card, Input, Button} from '@rneui/themed';
 import {Controller, useForm} from 'react-hook-form';
 import {Alert, ScrollView, StyleSheet} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import {placeholderImage} from '../utils/app-config';
+import {appId, placeholderImage} from '../utils/app-config';
 import {Video} from 'expo-av';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useMedia} from '../components/hooks/apiHooks';
+import {useMedia, useTag} from '../components/hooks/apiHooks';
 import PropTypes from 'prop-types';
 import {MainContext} from '../contexts/MainContext';
 
@@ -15,6 +15,7 @@ const Upload = ({navigation}) => {
   const [image, setImage] = useState(placeholderImage);
   const [type, setType] = useState('image');
   const {postMedia} = useMedia();
+  const {postTag} = useTag();
   const {
     control,
     reset,
@@ -48,6 +49,13 @@ const Upload = ({navigation}) => {
       const token = await AsyncStorage.getItem('userToken');
       const response = await postMedia(formData, token);
       console.log('lataus', response);
+      await postTag(
+        {
+          file_id: response.file_id,
+          tag: appId,
+        },
+        token,
+      );
       setUpdate(!update);
       Alert.alert('Upload', `${response.message}(id: ${response.file_id})`, [
         {
@@ -60,6 +68,7 @@ const Upload = ({navigation}) => {
       ]);
     } catch (error) {
       console.log(error.message);
+      Alert.alert('Error!', error.message);
     }
   };
 
