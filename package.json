@@ -28,7 +28,8 @@
     "expo-contacts": "~12.2.0",
     "expo-sensors": "~12.3.0",
     "expo-image-picker": "~14.3.2",
-    "expo-av": "~13.4.1"
+    "expo-av": "~13.4.1",
+    "expo-screen-orientation": "~6.0.5"
   },
   "devDependencies": {
     "@babel/core": "^7.22.11",
