@@ -1,14 +1,18 @@
 /* eslint-disable camelcase */
-import React from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {Text} from 'react-native';
 import {mediaUrl} from '../utils/app-config';
 import {Card, ListItem, Icon} from '@rneui/base';
 import {formatDate} from '../utils/functions';
 import {Video} from 'expo-av';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useUser} from '../components/hooks/apiHooks';
+import {useState} from 'react';
 
 const Single = ({route, navigation}) => {
-  // console.log('route params', route.params);
+  const [owner, setOwner] = useState({});
+  const {getUserById} = useUser();
   const {
     title,
     description,
@@ -16,13 +20,28 @@ const Single = ({route, navigation}) => {
     time_added: timeAdded,
     user_id: userId,
     filesize,
-    media_type,
+    media_type: mediaType,
   } = route.params;
+
+  // fetch owner info
+  const fetchOwner = async () => {
+    try {
+      const token = await AsyncStorage.getItem('userToken');
+      const ownerData = await getUserById(userId, token);
+      setOwner(ownerData);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+  useEffect(() => {
+    fetchOwner();
+  }, []);
+
   // Show full image and metadata
   return (
     <Card>
       <Card.Title>{title}</Card.Title>
-      {media_type === 'image' ? (
+      {mediaType === 'image' ? (
         <Card.Image
           source={{uri: mediaUrl + filename}}
           resizeMode="center"
@@ -49,7 +68,7 @@ const Single = ({route, navigation}) => {
       </ListItem>
       <ListItem>
         <Icon name="person" />
-        <Text>id: {userId}</Text>
+        <Text>id: {owner.username}</Text>
       </ListItem>
     </Card>
   );

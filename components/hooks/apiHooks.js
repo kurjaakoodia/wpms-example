@@ -102,7 +102,17 @@ const useUser = () => {
     }
   };
 
-  return {getUserByToken, postUser, checkUsername, putUser};
+  const getUserById = async (id, token) => {
+    const options = {
+      method: 'GET',
+      headers: {
+        'x-access-token': token,
+      },
+    };
+    return await doFetch(apiUrl + 'users/' + id, options);
+  };
+
+  return {getUserByToken, postUser, checkUsername, putUser, getUserById};
 };
 
 const useTag = () => {
