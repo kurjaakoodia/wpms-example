@@ -1,5 +1,4 @@
-/* eslint-disable camelcase */
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {Text} from 'react-native';
 import {mediaUrl} from '../utils/app-config';
@@ -8,7 +7,6 @@ import {formatDate} from '../utils/functions';
 import {Video} from 'expo-av';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useUser} from '../components/hooks/apiHooks';
-import {useState} from 'react';
 
 const Single = ({route, navigation}) => {
   const [owner, setOwner] = useState({});
