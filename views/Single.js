@@ -1,9 +1,11 @@
+/* eslint-disable camelcase */
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Text} from 'react-native';
 import {mediaUrl} from '../utils/app-config';
 import {Card, ListItem, Icon} from '@rneui/base';
 import {formatDate} from '../utils/functions';
+import {Video} from 'expo-av';
 
 const Single = ({route, navigation}) => {
   // console.log('route params', route.params);
@@ -14,16 +16,26 @@ const Single = ({route, navigation}) => {
     time_added: timeAdded,
     user_id: userId,
     filesize,
+    media_type,
   } = route.params;
   // Show full image and metadata
   return (
     <Card>
       <Card.Title>{title}</Card.Title>
-      <Card.Image
-        source={{uri: mediaUrl + filename}}
-        resizeMode="center"
-        style={{height: 300}}
-      />
+      {media_type === 'image' ? (
+        <Card.Image
+          source={{uri: mediaUrl + filename}}
+          resizeMode="center"
+          style={{height: 300}}
+        />
+      ) : (
+        <Video
+          source={{uri: mediaUrl + filename}}
+          resizeMode="center"
+          style={{height: 300}}
+          useNativeControls={true}
+        />
+      )}
       <ListItem>
         <Text>{description}</Text>
       </ListItem>
